@@ -22,7 +22,7 @@ export default class ModelProject {
 		let conn = new database();
 		const content = [this.DataIni, this.DataFim, this.Descricao, this.Nome];
 		const query = `insert into Projeto(DataFim, DataIni, Descricao, Nome) values ($1,$2,$3,$4)`;
-		conn.query(query, content, )
+		conn.query(query, content)
 			.then((data) => {
 				callback(data);
 			})
