@@ -1,8 +1,12 @@
 import database from '../database/database.js'
 
 export default class ModelTask {
-	constructor(data) {
-		this._data = data
+	constructor(data){
+		this.Nome = data.Nome;
+		this.Descricao = data.Descricao;
+		this.TarefaId = data.TarefaId;
+		this.IdPessoa_Projeto = data.IdPessoa_Projeto;
+		this.Status = data.Status;
 	}
 
 	getById(callback) {

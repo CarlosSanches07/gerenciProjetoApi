@@ -1,8 +1,12 @@
 import database from '../database/database.js'
 
 export default class ModelProject {
-	constructor(data) {
-		this._data = data;
+	constructor(data){
+		this.Nome = data.Nome;
+		this.DataFim = data.DataFim;
+		this.DataIni = data.DataIni;
+		this.Descricao = data.Descricao;
+		this.ProjetoId = data.ProjetoId;
 	}
 
 	getById(callback) {

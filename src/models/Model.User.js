@@ -1,8 +1,12 @@
 import database from '../database/database.js'
 
 export default class ModelUser {
-	constructor(data) {
-		this._data = data;
+	constructor(data){
+		this.Nome = data.Nome;
+		this.Email = data.Email;
+		this.PessoaId = data.PessoaId;
+		this.Login = data.Login;
+		this.Senha = data.Senha;
 	}
 	getById(callback) {
 		let conn = new database();
