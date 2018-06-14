@@ -10,120 +10,62 @@ export default class ModelTask {
 	}
 
 	getById(callback) {
-		let conn = new database();
-		conn.connection((data) => {
-			data.collection('tasks').find({project_owner: this._data.project_owner}).toArray()
-				.then((data) => {
-					callback(data);
-				})
-				.catch((err) => {
-					console.log(err);
-				})
-			data.close()
+		let values;
+		let query = 'select * from Tarefa ';
+		if (this.ProjetoId) {
+			query += 'where TarefaId = $1';
+			values = [this.TarefaId];
+		}
+		const conn = new database();
+		conn.connect();
+		conn.query(query, values, (err, data) => {
+			if (err) {
+				console.log(err);
+			}
+			callback(data.rows);
 		})
+
 	}
 
 	update(callback) {
-		let conn = new database();
-		conn.getObjId((objId) => {
-			let id = new objId(this._data._id)
-			console.log(this._data._id)
-			conn.connection((data) => {
-				data.collection('tasks').updateOne({ _id: id }, {
-					$set: {
-						name: this._data.name,
-						description: this._data.description,
-						deadline: this._data.deadline,
-						user_on: this._data.user_on,
-						project_owner: this._data.project_owner,
-						priority: this._data.priority,
-						status: this._data.status
-					}
-				})
-					.then((data) => {
-						callback();
-					})
-					.catch((err) => {
-						console.log(err);
-					})
-				data.close();
+		const query = 'update Tarefa set Nome = $1, Descricao = $2, IdPessoa_Projeto = $3, Status= $4 where TarefaId = $5';
+		const values = [this.Nome, this.Descricao, this.IdPessoa_Projeto, this.Status, this.TarefaId];
+		const conn = new database();
+		conn.connect();
+		conn.query(query, values)
+			.then((data) => {
+				callback(data)
 			})
-		})
-	}
-
-	updateUserOn(callback) {
-		let conn = new database();
-		conn.getObjId((objId) => {
-			let id = new objId(this._data._id)
-			conn.connection((data) => {
-				data.collection('users').find({ username: this._data.user_on }).toArray()
-					.then((res) => {
-						this._data.user_on = {id: res[0]._id, name: res[0].username};
-						data.collection('tasks').updateOne({_id: id},{
-							$set: {
-								name: this._data.name,
-								description: this._data.description,
-								deadline: this._data.deadline,
-								user_on: this._data.user_on,
-								project_owner: this._data.project_owner,
-								priority: this._data.priority,
-								status: this._data.status	
-							}
-						})
-							.then((response) => {
-								callback()
-							})
-							.catch((err) => {
-								console.log(err)
-							})
-						data.close();
-					})
-					.catch((err) => {
-						console.log(err);
-					})
-					 /*{
-					
-					}*/
-			})
-		})
+			.catch((err) => {
+				callback(err)
+			});
 	}
 
 	create(callback) {
 		let conn = new database();
-		conn.connection((data) => {
-			data.collection('tasks').insertOne({
-				name: this._data.name,
-				description: this._data.description,
-				deadline: this._data.deadline,
-				user_on: this._data.user_on,
-				project_owner: this._data.project_owner,
-				priority: this._data.priority,
-				status: this._data.status
+		const content = [this.Nome, this.Descricao, this.IdPessoa_Projeto, this.Status];
+		const query = `insert into Projeto(Nome, Descricao, IdPessoa_Projeto, Status) values ($1,$2,$3,$4)`;
+		conn.connect();
+		conn.query(query, content)
+			.then((data) => {
+				callback(data);
 			})
-				.then((data) => {
-					callback(data);
-				})
-				.catch((err) => {
-					console.log(err);
-				})
-			data.close();
-		})
+			.catch((err) => {
+				callback(err);
+			})
 	}
 
 	delete(callback) {
-		let conn = new database();
-		conn.getObjId((objId) => {
-			let id = new objId(this._data)
-			conn.connection((data) => {
-				data.collection('tasks').deleteOne({ _id: id })
-					.then((data) => {
-						callback(data);
-					})
-					.catch((err) => {
-						console.log(err);
-					})
-				data.close();
+		const conn = new database();
+		const query = 'delete from Tarefa where TarefaId = $1';
+		const values = [this.TarefaId];
+		conn.connect();
+		conn.query(query, values)
+			.then((data) => {
+				callback(data)
 			})
-		})
+			.catch((err) => {
+				callback(err)
+			});
 	}
 }

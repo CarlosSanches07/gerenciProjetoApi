@@ -2,8 +2,13 @@ import pg from 'pg'
 
 export default class database{
 	constructor() {
-		const connectionString = 'localhost:5432/gerenciaProjeto'; 
-		const client = new pg.Client(connectionString);
+		const connectionString = 'postgresql://postgres:0707Link@localhost:5432/gerenciaProjeto';
+		let client;
+		try {
+			client = new pg.Client(connectionString);
+		}catch(err) {
+			console.log(err)
+		}
 		return client;
 	}
 }

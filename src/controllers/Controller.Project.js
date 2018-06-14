@@ -2,32 +2,32 @@ import modelProject from '../models/Model.Project.js'
 
 export default class controllerProject {
 	getById(req, res){
-		let project = new modelProject(req.body.project);
-		project.getById()
-			.then(data => res.send({ projects: data }))
-			.catch(err => res.send({error : err}));
+		const data = {ProjetoId: req.query.ProjetoId};
+		let project = new modelProject(data);
+		project.getById((data) => {
+			res.send({ projects: data })
+		})
 	}
 
 	save(req, res){
 		let project = new modelProject(req.body.project)
-		project._data.managers = [req.session.user]
 		project.create((data)=> {
-			res.send({message : 'adicionado'});
+			res.send({message : 'data'});
 		})
 	}
 
 	updateById(req, res){
-		let project = new modelProject(req.body.project)
+		let project = new modelProject(req.body.projeto)
 		project.beforeEdit = req.body.beforeEdit
-		project.update(()=> {
-			res.send({edited : 'edited'});
+		project.update((data)=> {
+			res.send({edited : data});
 		})
 	}
 
 	deleteById(req, res){
-		let project = new modelProject(req.body.project)
-		project.delete(()=> {
-			res.send({message: 'deleted'});
+		let project = new modelProject(req.body.projeto)
+		project.delete((data)=> {
+			res.send({message: data});
 		})
 	}
 }

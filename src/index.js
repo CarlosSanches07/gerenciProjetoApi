@@ -1,6 +1,6 @@
-import RouterUser from './routes/Router.User.js'
-import RouterProject from './routes/Router.Project.js'
-import RouterTask from './routes/Router.Task.js'
+import RouterUser from './routes/Router.User.js';
+import RouterProject from './routes/Router.Project.js';
+import RouterTask from './routes/Router.Task.js';
 
 import express from 'express'
 import bodyParser from 'body-parser'
@@ -36,6 +36,7 @@ app.use('/user', RouterUser)
 app.use('/project', RouterProject)
 app.use('/task', RouterTask)
 
-app.listen(process.env.PORT || 8010)
-
+app.listen(process.env.PORT || 8010, () => {
+	console.log('escutando a porta 8010...');
+})
 // app.get('/user',(req, res)=>)

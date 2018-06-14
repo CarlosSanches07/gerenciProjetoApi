@@ -3,45 +3,31 @@ import modelTask from '../models/Model.Task.js'
 export default class controllerTask{
 
 	getById(req, res){
-		let task = new modelTask({project_owner: req.params.name})
+		const data = { TarefaId: req.query.TarefaId }
+		const task = new modelTask(data)
 		task.getById((data)=> {	
-			res.send({tasks : data});
+			res.send({data : data});
 		})
 	}
 
 	save(req, res){
-		let task = new modelTask(req.body.task)
-		task.create((data)=> {
-			console.log(data.message)
-			if (!data.queryFailure) {
-				res.send({message: "ok"})
-			} else {
-				res.send({message: "erro"})
-			}	
-			
+		const task = new modelTask(req.body.tarefa)
+		task.create((data)=> {	
+			res.send({data: data});
 		})
 	}
 
 	updateById(req, res){
-		let task = new modelTask(req.body.task)
-		if(task._data.do == 'fill') {
-			console.log('eita')
-			task._data.user_on = req.session.user
-			task.updateUserOn(() => {
-				res.send({task: task})	
-			})
-		} else {	
-			task.update(() => {
-				res.send({task: task})
-			})
-		}
+		const task = new modelProject(req.body.tarefa)
+		task.update((data) => {
+			res.send({ edited: data });
+		})
 	}
 
 	deleteById(req, res){
-		let task = new modelTask(req.params.id)
-		console.log(task)
+		const task = new modelTask(req.body.tarefa)
 		task.delete((data)=> {
-			res.send({deleted: data.deletedCount})
+			res.send({deleted: data})
 		})
 	}
 }
