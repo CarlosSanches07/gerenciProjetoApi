@@ -10,7 +10,7 @@ export default class ModelUser {
 	}
 
 	get(callback) {
-		const query = 'select * from Usuario';
+		const query = 'select * from Pessoa_Usuario';
 		const conn = new database();
 		conn.connect();
 		conn.query(query, (err, data) => {
@@ -22,12 +22,13 @@ export default class ModelUser {
 	}
 
 	login(callback) {
-		const values = [this.login, this.Senha]
-		const query = 'select PessoaId, Nome from Usuario where Login = $1 and Senha = $2';
+		const values = [this.Login, this.Senha]
+		const query = 'select PessoaId, Nome from Pessoa_Usuario where Login = $1 and Senha = $2';
+		const conn = new database();
 		conn.connect();
-		conn.query(query, values, (data, err) => {
+		conn.query(query, values, (err, data) => {
 			if(err => console.log(err));
-			callback(data);
+			callback(data.rows[0]);
 		})
 	}
 
