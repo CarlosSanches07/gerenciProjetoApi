@@ -7,8 +7,7 @@ let routerUser = express.Router()
 let user = new controllerUser();
 
 routerUser.get('/',(req, res)=> {
-	console.log('aqui')
-	user.getById(req, res);
+	user.get(req, res);
 })
 
 routerUser.post('/post',(req,res)=> {
@@ -24,7 +23,7 @@ routerUser.delete('/delete', (req, res)=> {
 })
 
 routerUser.post('/login',(req, res)=> {
-	user.verifyLogin(req,res);
+	user.login(req,res);
 })
 
 export default routerUser;
