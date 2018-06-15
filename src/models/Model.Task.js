@@ -7,6 +7,7 @@ export default class ModelTask {
 		this.TarefaId = data.TarefaId;
 		this.IdPessoa_Projeto = data.IdPessoa_Projeto;
 		this.Status = data.Status;
+		this.ProjetoId = data.ProjetoId;
 	}
 
 	getById(callback) {

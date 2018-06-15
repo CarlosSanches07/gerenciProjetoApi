@@ -7,6 +7,7 @@ export default class ModelProject {
 		this.DataIni = data.DataIni;
 		this.Descricao = data.Descricao;
 		this.ProjetoId = data.ProjetoId;
+		this.GerenteId = data.GerenteId;
 	}
 
 	getById(callback) {
