@@ -11,7 +11,8 @@ export default class controllerUser {
 	async login(req, res){
 		const user = await new modelUser(req.body.user);
 		user.login((data) => {
-			res.send({data: 'data'});
+			console.log(data)
+			res.send({user: data});
 		})
 	}
 }
