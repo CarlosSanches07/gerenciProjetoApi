@@ -2,19 +2,17 @@ import modelProject from '../models/Model.Project.js'
 
 export default class controllerProject {
 	async getById(req, res){
-		const data = {ProjetoId: req.query.ProjetoId};
+		const data = {GerenteId: req.query.project};
 		let project = await new modelProject(data);
 		project.getById((data) => {
-			console.log(data);
 			res.send({ projects: data })
 		})
 	}
 
 	async save(req, res){
-		console.log(req.body);
 		let project = await new modelProject(req.body);
 		project.create((data)=> {
-			res.send({message : 'data'});
+			res.send({message : data});
 		})
 	}
 

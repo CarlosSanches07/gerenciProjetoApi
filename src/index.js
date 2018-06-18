@@ -8,15 +8,7 @@ import morgan from 'morgan'
 import cors from 'cors'
 import session from 'express-session'
 
-//import controllerUser from '../controllers/Controller.User.js'
-
-//import database from './database/database.js'
-
-//const db = new database();
-
 let app = express();
-
-// let conn = new database();
 
 app.use(bodyParser.json())
 app.use(morgan('combined'))

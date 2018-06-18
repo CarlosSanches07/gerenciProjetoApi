@@ -12,10 +12,10 @@ export default class ModelProject {
 
 	getById(callback) {
 		let values;
-		let query = 'select * from Projeto ';
-		if (this.ProjetoId) {
-			query += 'where ProjetoId = $1';
-			values = [this.ProjetoId];
+		let query = 'select * from Projeto as p join Pessoa_Projeto as pp using(ProjetoId)';
+		if (this.GerenteId) {
+			query += 'where PessoaId = $1';
+			values = [this.GerenteId];
 		}
 		const conn = new database();
 		conn.connect();
@@ -29,16 +29,24 @@ export default class ModelProject {
 
 	create(callback) {
 		let conn = new database();
-		const content = [this.DataIni, this.DataFim, this.Descricao, this.Nome];
-		const query = `insert into Projeto(DataFim, DataIni, Descricao, Nome) values ($1,$2,$3,$4)`;
+		const content = [this.DataIni, this.DataFim, this.Descricao, this.Nome, this.GerenteId];
+		const query = `insert into Projeto(DataFim, DataIni, Descricao, Nome, GerenteId) values ($1,$2,$3,$4,$5) returning ProjetoId`;
 		conn.connect();
-		conn.query(query, content)
-			.then((data) => {
+		conn.query(query, content, (err, data) => {
+			if(err) {
+				console.log(err);
+			}
+			console.log(data.rows[0].projetoid);
+			const projId = data.rows[0].projetoid;
+			const query2 = 'insert into Pessoa_Projeto(ProjetoId, PessoaId) values ($1, $2)';
+			const values = [projId, this.GerenteId];
+			conn.query(query2, values,(err, data) => {
+				if(err) {
+					console.log(err);
+				}
 				callback(data);
 			})
-			.catch((err) => {
-				callback(err);
-			})
+		})
 	}
 
 	update(callback) {

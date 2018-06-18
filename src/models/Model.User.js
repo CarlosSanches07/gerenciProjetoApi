@@ -18,7 +18,7 @@ export default class ModelUser {
 				console.log(err);
 			}
 			callback(data.rows);
-		})
+		});
 	}
 
 	login(callback) {
@@ -29,6 +29,28 @@ export default class ModelUser {
 		conn.query(query, values, (err, data) => {
 			if(err => console.log(err));
 			callback(data.rows[0]);
+		});
+	}
+
+	create(callback) {
+		const values = [this.Nome, this.Email, this.Login, this.Senha];
+		const query = 'insert into Pessoa_Usuario(Nome, Email, Login, Senha) values($1, $2, $3, $4)';
+		const conn = new database();
+		conn.connect();
+		conn.query(query, values, (err, data) => {
+			if(err => console.log(err));
+			callback(data);
+		});
+	}
+
+	verifyUser(callback) {
+		const values = [this.Login, this.Email];
+		const query = 'select * from Pessoa_Usuario where Login = $1 or Email = $2';
+		const conn = new database();
+		conn.connect();
+		conn.query(query, values, (err, data) => {
+			if(err => console.log(err));
+			callback(data);
 		})
 	}
 
