@@ -2,23 +2,23 @@ import modelTask from '../models/Model.Task.js'
 
 export default class controllerTask{
 
-	getById(req, res){
-		const data = { TarefaId: req.query.TarefaId }
-		const task = new modelTask(data)
+	async getById(req, res){
+		const task = await new modelTask(req.query)
 		task.getById((data)=> {	
-			res.send({data : data});
+			res.send(data);
 		})
 	}
 
-	save(req, res){
-		const task = new modelTask(req.body.tarefa)
+	async save(req, res){
+		console.log(req.body)
+		const task = await new modelTask(req.body)
 		task.create((data)=> {	
-			res.send({data: data});
+			res.send({message: data});
 		})
 	}
 
 	updateById(req, res){
-		const task = new modelProject(req.body.tarefa)
+		const task = new modelTask(req.body)
 		task.update((data) => {
 			res.send({ edited: data });
 		})

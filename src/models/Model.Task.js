@@ -11,12 +11,19 @@ export default class ModelTask {
 	}
 
 	getById(callback) {
+		console.log(this);
 		let values;
-		let query = 'select * from Tarefa ';
-		if (this.ProjetoId) {
-			query += 'where TarefaId = $1';
-			values = [this.TarefaId];
+		let query = 'select nome, descricao, status, tarefaid, idpessoa_projeto from Tarefa ';
+		if (this.ProjetoId !== 'null') {
+			console.log('Projeto')
+			query += 'where ProjetoId = $1 ';
+			values = [this.ProjetoId];
 		}
+		if (this.TarefaId && typeof(this.TarefaId) !== String) {
+			query += 'where TarefaId = $1 ';
+			values = [this.TarefaId]
+		}
+		query += 'order by tarefaid';
 		const conn = new database();
 		conn.connect();
 		conn.query(query, values, (err, data) => {
@@ -29,12 +36,13 @@ export default class ModelTask {
 	}
 
 	update(callback) {
-		const query = 'update Tarefa set Nome = $1, Descricao = $2, IdPessoa_Projeto = $3, Status= $4 where TarefaId = $5';
-		const values = [this.Nome, this.Descricao, this.IdPessoa_Projeto, this.Status, this.TarefaId];
+		const query = 'update Tarefa set Status= $1 where TarefaId = $2';
+		const values = [this.Status, this.TarefaId];
 		const conn = new database();
 		conn.connect();
 		conn.query(query, values)
 			.then((data) => {
+				console.log(data);
 				callback(data)
 			})
 			.catch((err) => {
@@ -44,16 +52,17 @@ export default class ModelTask {
 
 	create(callback) {
 		let conn = new database();
-		const content = [this.Nome, this.Descricao, this.IdPessoa_Projeto, this.Status];
-		const query = `insert into Projeto(Nome, Descricao, IdPessoa_Projeto, Status) values ($1,$2,$3,$4)`;
+		const content = [this.Nome, this.Descricao, this.ProjetoId, this.Status];
+		const query = `insert into Tarefa(Nome, Descricao, ProjetoId, Status) values ($1,$2,$3,$4)`;
 		conn.connect();
-		conn.query(query, content)
-			.then((data) => {
-				callback(data);
-			})
-			.catch((err) => {
-				callback(err);
-			})
+		conn.query(query, content, (err, data) => {
+			if(err) {
+				console.log(err);
+				return;
+			}
+			console.log(data);
+			callback(data)
+		})
 	}
 
 	delete(callback) {
