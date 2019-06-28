@@ -3,7 +3,7 @@ import modelUser from '../models/Model.User.js'
 export default class controllerUser {
 	get(req, res){
 		let user = new modelUser();
-		user.getById((data)=> {
+		user.get((data)=> {
 			res.send({data : data});
 		})
 	}

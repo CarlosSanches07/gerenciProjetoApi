@@ -2,6 +2,7 @@ import database from '../database/database.js'
 
 export default class ModelProject {
 	constructor(data){
+		console.log(data)
 		this.Nome = data.Nome;
 		this.DataFim = data.DataFim;
 		this.DataIni = data.DataIni;
@@ -36,7 +37,6 @@ export default class ModelProject {
 			if(err) {
 				console.log(err);
 			}
-			console.log(data.rows[0].projetoid);
 			const projId = data.rows[0].projetoid;
 			const query2 = 'insert into Pessoa_Projeto(ProjetoId, PessoaId) values ($1, $2)';
 			const values = [projId, this.GerenteId];
@@ -75,5 +75,18 @@ export default class ModelProject {
 			.catch((err) => {
 				callback(err)
 			});
+	}
+
+	getByProjetoId(callback) {
+		const conn = new database();
+		const query = `select PessoaId from Pessoa_Projeto where ProjetoId = $1`;
+		const values = [this.ProjetoId];
+		console.log(this);
+		conn.connect();
+		conn.query(query, values, (err, data) => {
+			if(err)
+				console.log(err);
+			callback(data.rows);
+		})
 	}
 }

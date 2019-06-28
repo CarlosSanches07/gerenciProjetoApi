@@ -22,4 +22,8 @@ routerProject.delete('/delete', (req, res)=> {
 	project.deleteById(req, res)
 })
 
+routerProject.get('/user', (req, res) => {
+	project.getByProjetoId(req, res)
+})
+
 export default routerProject

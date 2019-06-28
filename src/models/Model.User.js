@@ -2,15 +2,17 @@ import database from '../database/database.js'
 
 export default class ModelUser {
 	constructor(data){
-		this.Nome = data.Nome;
-		this.Email = data.Email;
-		this.PessoaId = data.PessoaId;
-		this.Login = data.Login;
-		this.Senha = data.Senha;
+		if(data){
+			this.Nome = data.Nome;
+			this.Email = data.Email;
+			this.PessoaId = data.PessoaId;
+			this.Login = data.Login;
+			this.Senha = data.Senha;
+		}
 	}
 
 	get(callback) {
-		const query = 'select * from Pessoa_Usuario';
+		const query = 'select Nome, PessoaId, Email from Pessoa_Usuario';
 		const conn = new database();
 		conn.connect();
 		conn.query(query, (err, data) => {

@@ -30,4 +30,12 @@ export default class controllerProject {
 			res.send({message: data});
 		})
 	}
+
+	async getByProjetoId(req, res) {
+		const data = {ProjetoId : req.query.projetoid}
+		let project = await new modelProject(data);
+		project.getByProjetoId((data) => {
+			res.send({users: data})
+		})
+	}
 }
