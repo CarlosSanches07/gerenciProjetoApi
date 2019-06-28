@@ -71,11 +71,7 @@ export default class ModelTask {
 		const values = [this.TarefaId];
 		conn.connect();
 		conn.query(query, values)
-			.then((data) => {
-				callback(data)
-			})
-			.catch((err) => {
-				callback(err)
-			});
+			.then(callback(data))
+			.catch(callback(err));
 	}
 }
