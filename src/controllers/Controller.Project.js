@@ -38,4 +38,13 @@ export default class controllerProject {
 			res.send({users: data})
 		})
 	}
+
+	async addUser(req, res) {
+		let project = await new modelProject();
+		const pessoa = req.body.pessoa;
+		const projeto = req.body.projeto;
+		project.addUser(pessoa, projeto, (data) =>{
+			res.send({message: data});
+		})
+	}
 }

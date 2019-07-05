@@ -40,7 +40,9 @@ export default class ModelUser {
 		const conn = new database();
 		conn.connect();
 		conn.query(query, values, (err, data) => {
-			if(err => console.log(err));
+			if(err => console.log(err))
+				return;
+				this.PessoaId = data.PessoaId;
 			callback(data);
 		});
 	}

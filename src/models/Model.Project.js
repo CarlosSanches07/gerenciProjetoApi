@@ -2,13 +2,14 @@ import database from '../database/database.js'
 
 export default class ModelProject {
 	constructor(data){
-		console.log(data)
-		this.Nome = data.Nome;
-		this.DataFim = data.DataFim;
-		this.DataIni = data.DataIni;
-		this.Descricao = data.Descricao;
-		this.ProjetoId = data.ProjetoId;
-		this.GerenteId = data.GerenteId;
+		if(data){
+			this.Nome = data.Nome;
+			this.DataFim = data.DataFim;
+			this.DataIni = data.DataIni;
+			this.Descricao = data.Descricao;
+			this.ProjetoId = data.ProjetoId;
+			this.GerenteId = data.GerenteId;
+		}
 	}
 
 	getById(callback) {
@@ -46,6 +47,20 @@ export default class ModelProject {
 				}
 				callback(data);
 			})
+		})
+	}
+
+	addUser(pessoa,projeto,callback) {
+		let conn = new database();
+		const values = [projeto, pessoa];
+		const query = 'insert into Pessoa_Projeto(ProjetoId, PessoaId) values ($1, $2)';
+		conn.connect();
+		conn.query(query, values, (err, data) => {
+			if(err) {
+				console.log(err);
+				return "505";
+			}
+			callback(data);
 		})
 	}
 

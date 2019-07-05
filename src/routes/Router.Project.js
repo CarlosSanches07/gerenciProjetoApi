@@ -26,4 +26,8 @@ routerProject.get('/user', (req, res) => {
 	project.getByProjetoId(req, res)
 })
 
+routerProject.post('/adduser', (req, res) =>{
+	project.addUser(req, res)
+})
+
 export default routerProject
